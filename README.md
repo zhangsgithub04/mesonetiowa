@@ -20,7 +20,7 @@ All join keys use explicit UTC hour-ending timestamps. Chicago time is display-o
 
 The spatial audit uses the four enclosing native grid points and interpolates in native grid coordinates. For 14:00–15:00 UTC on August 7, Stage IV near the study coordinate is 11.375 mm by nearest-point sampling and 11.523 mm by bilinear interpolation. At the airport, those values are 11.125 and 10.772 mm, respectively, versus the airport gauge's 6.350 mm. These are event-specific comparisons. Interpolation changes spatial sampling and cannot turn a grid estimate into a point measurement. A fully collocated or interpolated model experiment would require re-extracting the entire dataset and retraining.
 
-To verify the shipped data and model identity, run `python verify_alignment.py`. Its report is saved in `web/dataset-audit.json`. To reproduce the single-hour spatial audit, install the optional `pyproj` package and run `python spatial_audit.py HRRR.grib2 STAGE_IV.grib2 MRMS.grib2.gz` with the three archived fields ending at 15:00 UTC on August 7. The result is in `web/spatial-audit.json`.
+To verify the shipped data and model identity, run `python verify_alignment.py`. Its report is saved in `docs/dataset-audit.json`. To reproduce the single-hour spatial audit, install the optional `pyproj` package and run `python spatial_audit.py HRRR.grib2 STAGE_IV.grib2 MRMS.grib2.gz` with the three archived fields ending at 15:00 UTC on August 7. The result is in `docs/spatial-audit.json`.
 
 [ecCodes nearest-point documentation](https://sites.ecmwf.int/docs/eccodes/interfaceeccodes_1_1codes__grib__find__nearest.html) · [KDSM station coordinates](https://mesonet.agron.iastate.edu/sites/site.php?network=IA_ASOS&station=DSM)
 
@@ -29,10 +29,10 @@ To verify the shipped data and model identity, run `python verify_alignment.py`.
 From the extracted project folder, run:
 
 ```bash
-python -m http.server 8000 --directory web
+python -m http.server 8000 --directory docs
 ```
 
-Open [http://localhost:8000](http://localhost:8000). Choose an August example or edit the input grid. The UI runs both models on the same input and shows two corrections per model, one per reference. Leaving a past HRRR input blank enables inference with the reduced model. Each corrected amount is raw HRRR plus its predicted correction, clipped at zero. The held-out examples show both reference totals. Switch the reference in the benchmark table to see the corresponding scores. The included ONNX Runtime Web runs the model locally. This UI accepts manual input and bundled examples.
+Open [http://localhost:8000](http://localhost:8000). Choose an August example or edit the input grid. The UI runs both models on the same input and shows two corrections per model, one per reference. Leaving a past HRRR input blank enables inference with the reduced model. Each corrected amount is raw HRRR plus its predicted correction, clipped at zero. The held-out examples show both reference totals. Switch the reference in the benchmark table to see the corresponding scores. The included ONNX Runtime docs runs the model locally. This UI accepts manual input and bundled examples.
 
 ## How each sample is aligned
 
@@ -100,13 +100,13 @@ python compare.py
 
 The download scripts skip existing months unless given `--refresh`. If IEM rate-limits requests, obtain a single UTC routine METAR export with columns `station,valid,tmpf,dwpf,drct,sknt`, then pass it with `--asos-csv path.csv` to reuse it across months. `prepare.py` fetches HRRR by byte range and reads Stage IV monthly tar files without unpacking them. The observation script retains only point data, using one MRMS file per hour rather than every two-minute MRMS update. Allow about 1 GB working disk for weather files when processing months serially, separate from the CPU training environment. Download volume depends on compressed radar grid size and storm coverage.
 
-The full ONNX graph expects a `[1,6,7]` float32 sequence and the reduced graph expects `[1,6,5]`. Both take a separate `[1,1]` target HRRR tensor. It returns two `[1,2]` tensors, the signed residuals and the corrected rainfall amounts. Both outputs are ordered Stage IV first, IEM gauge second. The browser consumes the matching JSON feature spec, metrics, and held-out examples. Each evaluation report ships as `web/models/<history-mode>/metrics.json` and is also embedded as JSON in the ONNX model metadata under `evaluation_metrics`. The sidecar includes the ONNX SHA-256 so the report can be matched to its model. The UI reports MAE, RMSE, wet-hour MAE, and wet-hour CSI for each reference. `train.py` verifies ONNX output against PyTorch on every test sample.
+The full ONNX graph expects a `[1,6,7]` float32 sequence and the reduced graph expects `[1,6,5]`. Both take a separate `[1,1]` target HRRR tensor. It returns two `[1,2]` tensors, the signed residuals and the corrected rainfall amounts. Both outputs are ordered Stage IV first, IEM gauge second. The browser consumes the matching JSON feature spec, metrics, and held-out examples. Each evaluation report ships as `docs/models/<history-mode>/metrics.json` and is also embedded as JSON in the ONNX model metadata under `evaluation_metrics`. The sidecar includes the ONNX SHA-256 so the report can be matched to its model. The UI reports MAE, RMSE, wet-hour MAE, and wet-hour CSI for each reference. `train.py` verifies ONNX output against PyTorch on every test sample.
 
 [NOAA HRRR archive](https://registry.opendata.aws/noaa-hrrr-pds/) · [NOAA MRMS archive](https://registry.opendata.aws/noaa-mrms-pds/) · [MRMS product table](https://www.nssl.noaa.gov/projects/mrms/operational/tables.php) · [IEM airport observations](https://mesonet.agron.iastate.edu/request/download.phtml?network=IA) · [NCAR Stage IV archive](https://gdex.ucar.edu/datasets/d507005/)
 
 ## Redeploy
 
-Replace the served `web/` directory with the entire `web/` directory in this release. Keep the model subfolders and `comparison.json` inside `web/`. Browser inference uses the bundled runtime. Host the files over HTTP and reload the page after replacing them.
+Replace the served `docs/` directory with the entire `docs/` directory in this release. Keep the model subfolders and `comparison.json` inside `docs/`. Browser inference uses the bundled runtime. Host the files over HTTP and reload the page after replacing them.
 
 ## Paired August results
 
@@ -121,7 +121,7 @@ Replace the served `web/` directory with the entire `web/` directory in this rel
 | Airport gauge | With HRRR history | 0.178 | 1.007 | 3.139 | 0.057 |
 | Airport gauge | Without HRRR history | 0.177 | 1.063 | 3.193 | 0.227 |
 
-For August 7, 14:00–15:00 UTC, both models clipped their corrected rainfall to zero for both references. The Stage IV and airport totals were 11.375 and 6.350 mm, respectively. The small wet-hour sample and single seed limit generalization. The ONNX predictions matched their PyTorch counterparts on the held-out set, and the browser interface was checked with the bundled WebAssembly runtime in a simulated browser.
+For August 7, 14:00–15:00 UTC, both models clipped their corrected rainfall to zero for both references. The Stage IV and airport totals were 11.375 and 6.350 mm, respectively. The small wet-hour sample and single seed limit generalization. The ONNX predictions matched their PyTorch counterparts on the held-out set, and the browser interface was checked with the bundled docsAssembly runtime in a simulated browser.
 
 ## Browse the full local August calendar
 
