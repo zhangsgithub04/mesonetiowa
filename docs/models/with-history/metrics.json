@@ -1,0 +1,185 @@
+{
+  "history_mode": "with-history",
+  "label": "With historical HRRR and error",
+  "test_hours_sha256": "28dcfffb6d324e8f6b9cfbaeb4b5bb8affc21717ca8d3676bc67cf5f9a241bd3",
+  "input_hours": 4416,
+  "data_months_utc": [
+    "202503",
+    "202504",
+    "202505",
+    "202506",
+    "202507",
+    "202508"
+  ],
+  "gauge_coverage": {
+    "202503": {
+      "hours": 744,
+      "complete_valid_hours": 586
+    },
+    "202504": {
+      "hours": 720,
+      "complete_valid_hours": 181
+    },
+    "202505": {
+      "hours": 744,
+      "complete_valid_hours": 0
+    },
+    "202506": {
+      "hours": 720,
+      "complete_valid_hours": 475
+    },
+    "202507": {
+      "hours": 744,
+      "complete_valid_hours": 564
+    },
+    "202508": {
+      "hours": 744,
+      "complete_valid_hours": 496
+    }
+  },
+  "architecture": {
+    "history_steps": 6,
+    "hidden_size": 24,
+    "recurrent_layers": 2,
+    "inter_layer_dropout": 0.15,
+    "trainable_parameters": 8802
+  },
+  "split": {
+    "train": {
+      "hours": 2842,
+      "available_labels": {
+        "stage4": 2842,
+        "iem": 1167
+      },
+      "wet_hours": {
+        "stage4": 161,
+        "iem": 68
+      },
+      "first_utc": "2025-03-01T07:00:00+00:00",
+      "last_utc": "2025-06-30T23:00:00+00:00"
+    },
+    "validation": {
+      "hours": 731,
+      "available_labels": {
+        "stage4": 731,
+        "iem": 553
+      },
+      "wet_hours": {
+        "stage4": 53,
+        "iem": 46
+      },
+      "first_utc": "2025-07-01T07:00:00+00:00",
+      "last_utc": "2025-07-31T23:00:00+00:00"
+    },
+    "test": {
+      "hours": 496,
+      "available_labels": {
+        "stage4": 496,
+        "iem": 496
+      },
+      "wet_hours": {
+        "stage4": 15,
+        "iem": 17
+      },
+      "first_utc": "2025-08-01T07:00:00+00:00",
+      "last_utc": "2025-08-27T07:00:00+00:00"
+    }
+  },
+  "metrics": {
+    "stage4": {
+      "Raw HRRR": {
+        "mae_mm": 0.11597984284162521,
+        "rmse_mm": 1.30985689163208,
+        "wet_mae_mm": 3.699199676513672,
+        "csi_0_25": 0.5,
+        "dry_false_alarm_rate": 0.002079002079002079
+      },
+      "Scaled HRRR": {
+        "mae_mm": 0.08006242662668228,
+        "rmse_mm": 0.7298446893692017,
+        "wet_mae_mm": 2.585326910018921,
+        "csi_0_25": 0.375,
+        "dry_false_alarm_rate": 0.002079002079002079
+      },
+      "Regression \u00b7 HRRR only": {
+        "mae_mm": 0.19550107483842846,
+        "rmse_mm": 1.0905961099209014,
+        "wet_mae_mm": 3.3568292702467555,
+        "csi_0_25": 0.13333333333333333,
+        "dry_false_alarm_rate": 0.0
+      },
+      "Regression \u00b7 latest hour": {
+        "mae_mm": 0.19302490621017962,
+        "rmse_mm": 1.0108908973507336,
+        "wet_mae_mm": 3.1164430361420545,
+        "csi_0_25": 0.18518518518518517,
+        "dry_false_alarm_rate": 0.02494802494802495
+      },
+      "Regression \u00b7 six hours": {
+        "mae_mm": 0.17630415760081586,
+        "rmse_mm": 1.027613917586272,
+        "wet_mae_mm": 3.2359557801851335,
+        "csi_0_25": 0.11904761904761904,
+        "dry_false_alarm_rate": 0.056133056133056136
+      },
+      "LSTM \u00b7 six hours": {
+        "mae_mm": 0.1503525674343109,
+        "rmse_mm": 1.1366311311721802,
+        "wet_mae_mm": 3.4135220050811768,
+        "csi_0_25": 0.23529411764705882,
+        "dry_false_alarm_rate": 0.004158004158004158
+      }
+    },
+    "iem": {
+      "Raw HRRR": {
+        "mae_mm": 0.11718548834323883,
+        "rmse_mm": 1.2440309524536133,
+        "wet_mae_mm": 3.316235303878784,
+        "csi_0_25": 0.4444444444444444,
+        "dry_false_alarm_rate": 0.0020876826722338203
+      },
+      "Scaled HRRR": {
+        "mae_mm": 0.07858956605195999,
+        "rmse_mm": 0.6316248774528503,
+        "wet_mae_mm": 2.271221399307251,
+        "csi_0_25": 0.23529411764705882,
+        "dry_false_alarm_rate": 0.0
+      },
+      "Regression \u00b7 HRRR only": {
+        "mae_mm": 0.21301886071429885,
+        "rmse_mm": 0.9529645763453204,
+        "wet_mae_mm": 3.042573267122053,
+        "csi_0_25": 0.058823529411764705,
+        "dry_false_alarm_rate": 0.0
+      },
+      "Regression \u00b7 latest hour": {
+        "mae_mm": 0.18633918217419163,
+        "rmse_mm": 0.8911617511098596,
+        "wet_mae_mm": 2.8490571244440104,
+        "csi_0_25": 0.11538461538461539,
+        "dry_false_alarm_rate": 0.018789144050104383
+      },
+      "Regression \u00b7 six hours": {
+        "mae_mm": 0.21977003728180708,
+        "rmse_mm": 0.9105442321568896,
+        "wet_mae_mm": 2.835582744235713,
+        "csi_0_25": 0.125,
+        "dry_false_alarm_rate": 0.081419624217119
+      },
+      "LSTM \u00b7 six hours": {
+        "mae_mm": 0.17845088243484497,
+        "rmse_mm": 1.0074435472488403,
+        "wet_mae_mm": 3.138803482055664,
+        "csi_0_25": 0.05660377358490566,
+        "dry_false_alarm_rate": 0.07515657620041753
+      }
+    }
+  },
+  "epoch": 23,
+  "wet_threshold_mm": 0.25,
+  "model_file": "model.onnx",
+  "validation_start_utc": "2025-07-01T00:00:00+00:00",
+  "test_start_utc": "2025-08-01T00:00:00+00:00",
+  "onnx_max_difference": 4.76837158203125e-07,
+  "model_sha256": "d6033bde5799739ba25b07d1638b5f0c51c3b4b03758be3c63725d44572b6662"
+}

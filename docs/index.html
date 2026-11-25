@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Des Moines rainfall correction</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="runtime/ort.wasm.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <p class="location">Des Moines, Iowa</p>
+    <h1>Hourly rainfall correction</h1>
+    <p>Compare two LSTMs on the same weather history and target-hour HRRR forecast. Both estimate rainfall against the Stage IV grid and the airport gauge.</p>
+  </header>
+  <form id="predict" class="card">
+    <div class="top">
+      <h2>Forecast and recent weather</h2>
+      <label>August 2025 hour (Chicago time) <select id="examples" disabled><option>Loading…</option></select></label>
+    </div>
+    <label class="forecast">Target-hour HRRR rain (mm) <input type="number" id="forecast" min="0" max="999" step="any" required></label>
+    <p id="coverage" class="note" aria-live="polite"></p>
+    <p id="timing">Enter the six observation hours oldest first. The latest input hour ends one hour before the target hour begins. Enter MRMS rainfall for all six hours. Add historical HRRR for those hours to also run the model that uses HRRR history. The page computes MRMS minus HRRR. Airport weather fields can be left blank.</p>
+    <div class="table-scroll">
+      <table class="entry" aria-describedby="timing">
+        <thead id="history-head"></thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+    <button disabled>Run comparison</button>
+    <p id="status" role="status">Loading both ONNX models…</p>
+  </form>
+  <section class="card results" aria-live="polite">
+    <h2>Forecast comparison</h2>
+    <p>Raw HRRR <strong id="raw">—</strong></p>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">Reference</th><th scope="col">Model</th><th scope="col">Model correction<br>(before clipping)</th><th scope="col">Applied correction</th><th scope="col">Corrected rainfall</th><th scope="col">Reference rainfall</th></tr></thead>
+      <tbody id="outputs"></tbody>
+    </table></div>
+  </section>
+  <p id="valid" class="example-time"></p>
+  <p class="note">Applied correction is corrected rainfall minus raw HRRR. Corrected rainfall is clipped at zero. The wet/dry label uses the evaluation threshold.</p>
+  <details class="card alignment">
+    <summary>Locations, units, and time alignment</summary>
+    <p>HRRR, Stage IV, and MRMS each use the nearest point on their own native grid to 41.5868° N, 93.6250° W. Airport weather and gauge rainfall come from KDSM, about 6.3 km away.</p>
+    <p>Rainfall is a one-hour accumulation in mm. The target and historical HRRR values use forecast hours 1–2 of their respective runs. Stage IV ends at the stated UTC hour. MRMS is radar-only rainfall. The gauge sums 60 valid minute-ending records. Airport temperature and dew point are in °C, and wind components are in m/s, positive east or north.</p>
+    <p>All joins use hour-ending UTC. Chicago time is displayed for context. Historical airport weather is a report within each input hour, and the most recent input hour ends one hour before the modeled issue time.</p>
+    <div class="table-scroll"><table>
+      <caption>Sampling comparison for the hour ending 15:00 UTC on August 7, 2025 (mm)</caption>
+      <thead><tr><th scope="col">Grid</th><th scope="col">Study point · nearest</th><th scope="col">Study point · bilinear</th><th scope="col">Airport · nearest</th><th scope="col">Airport · bilinear</th></tr></thead>
+      <tbody id="sampling-audit"></tbody>
+    </table></div>
+    <p><a href="spatial-audit.json" download>Download nearest-point and bilinear comparison for August 7</a> · <a href="dataset-audit.json" download>Download six-month alignment audit</a></p>
+  </details>
+  <section class="card benchmarks">
+    <div class="top"><h2>Held-out performance</h2><label>Rainfall reference <select id="benchmark-reference"></select></label></div>
+    <p id="test-period"></p>
+    <p class="note"><a href="comparison.json" download>Download comparison metrics</a> · <a href="models/with-history/model.onnx" download>ONNX with HRRR history</a> · <a href="models/without-history/model.onnx" download>ONNX without HRRR history</a></p>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">Model</th><th scope="col">MAE</th><th scope="col">RMSE</th><th scope="col">Wet-hour MAE</th><th scope="col">Wet-hour CSI</th></tr></thead>
+      <tbody id="metrics"></tbody>
+    </table></div>
+    <p class="note">The dropdown covers the local calendar month. The benchmark uses the original paired August test hours with complete gauge data. Errors are in millimeters. A wet hour has at least 0.25 mm in the selected reference. CSI is the fraction of hours flagged wet by either the model or reference that both flagged wet.</p>
+  </section>
+</main>
+</body>
+</html>

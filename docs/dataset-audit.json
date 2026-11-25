@@ -1,0 +1,38 @@
+{
+  "monthly_alignment": {
+    "202503": {
+      "utc_rows": 744,
+      "gauge_labeled_hours": 586,
+      "radar_valid_archive_timestamp_within_one_hour": 735
+    },
+    "202504": {
+      "utc_rows": 720,
+      "gauge_labeled_hours": 181,
+      "radar_valid_archive_timestamp_within_one_hour": 720
+    },
+    "202505": {
+      "utc_rows": 744,
+      "gauge_labeled_hours": 0,
+      "radar_valid_archive_timestamp_within_one_hour": 744
+    },
+    "202506": {
+      "utc_rows": 720,
+      "gauge_labeled_hours": 475,
+      "radar_valid_archive_timestamp_within_one_hour": 710
+    },
+    "202507": {
+      "utc_rows": 744,
+      "gauge_labeled_hours": 564,
+      "radar_valid_archive_timestamp_within_one_hour": 743
+    },
+    "202508": {
+      "utc_rows": 744,
+      "gauge_labeled_hours": 496,
+      "radar_valid_archive_timestamp_within_one_hour": 744
+    }
+  },
+  "onnx_sha256": {
+    "with-history": "d6033bde5799739ba25b07d1638b5f0c51c3b4b03758be3c63725d44572b6662",
+    "without-history": "23191fa613a23abc253a0820eeb0e7d0933554dd57c884b79cdc38e01a7446f3"
+  }
+}

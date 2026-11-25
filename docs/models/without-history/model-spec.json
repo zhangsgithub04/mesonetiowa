@@ -1,0 +1,71 @@
+{
+  "gauge_reference": "KDSM ASOS, 60 minute-ending totals per nominal UTC clock hour",
+  "output_shape": [
+    1,
+    2
+  ],
+  "references": {
+    "stage4": "Stage IV grid",
+    "iem": "IEM airport gauge (clock-hour)"
+  },
+  "history_shape": [
+    1,
+    6,
+    5
+  ],
+  "target_shape": [
+    1,
+    1
+  ],
+  "unit": "mm",
+  "missing": -9999.0,
+  "order": "oldest first",
+  "issue_hours_before_target_end": 1,
+  "latest_history_hours_before_target_end": 2,
+  "forecast_accumulation_hours": [
+    1,
+    2
+  ],
+  "features": [
+    {
+      "name": "mrms_mm",
+      "label": "MRMS rainfall",
+      "unit": "mm",
+      "low": 0,
+      "high": 999,
+      "optional": false
+    },
+    {
+      "name": "temp_c",
+      "label": "Air temperature",
+      "unit": "\u00b0C",
+      "low": -70,
+      "high": 60,
+      "optional": true
+    },
+    {
+      "name": "dew_c",
+      "label": "Dew point",
+      "unit": "\u00b0C",
+      "low": -90,
+      "high": 60,
+      "optional": true
+    },
+    {
+      "name": "u_ms",
+      "label": "Eastward wind",
+      "unit": "m/s",
+      "low": -100,
+      "high": 100,
+      "optional": true
+    },
+    {
+      "name": "v_ms",
+      "label": "Northward wind",
+      "unit": "m/s",
+      "low": -100,
+      "high": 100,
+      "optional": true
+    }
+  ]
+}

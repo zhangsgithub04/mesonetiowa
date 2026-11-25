@@ -1,0 +1,64 @@
+{
+  "study": {
+    "lat": 41.5868,
+    "lon": -93.625
+  },
+  "airport": {
+    "lat": 41.53395,
+    "lon": -93.65311
+  },
+  "valid_utc": "2025-08-07T15:00:00+00:00",
+  "fields": {
+    "hrrr": {
+      "grid": "lambert",
+      "study": {
+        "lat": 41.5908315,
+        "lon": -93.615027,
+        "distance_km": 0.9428,
+        "nearest_mm": 0.5,
+        "bilinear_mm": 0.62857
+      },
+      "airport": {
+        "lat": 41.5381311,
+        "lon": -93.654024,
+        "distance_km": 0.4711,
+        "nearest_mm": 0.79,
+        "bilinear_mm": 1.29728
+      }
+    },
+    "stage4": {
+      "grid": "polar_stereographic",
+      "study": {
+        "lat": 41.5743956,
+        "lon": -93.6190553,
+        "distance_km": 1.4653,
+        "nearest_mm": 11.375,
+        "bilinear_mm": 11.52276
+      },
+      "airport": {
+        "lat": 41.5369686,
+        "lon": -93.6291182,
+        "distance_km": 2.025,
+        "nearest_mm": 11.125,
+        "bilinear_mm": 10.77233
+      }
+    },
+    "mrms": {
+      "grid": "regular_ll",
+      "study": {
+        "lat": 41.585,
+        "lon": -93.625001,
+        "distance_km": 0.2,
+        "nearest_mm": 10.7,
+        "bilinear_mm": 10.628
+      },
+      "airport": {
+        "lat": 41.535,
+        "lon": -93.655001,
+        "distance_km": 0.1959,
+        "nearest_mm": 8.4,
+        "bilinear_mm": 8.91773
+      }
+    }
+  }
+}
